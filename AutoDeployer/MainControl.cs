@@ -24,21 +24,11 @@
 
         #region Public Properties
 
-        string IGitHubPlugin.RepositoryName
-        {
-            get
-            {
-                return "XrmToolBox.Plugins";
-            }
-        }
+        string IGitHubPlugin.RepositoryName =>
+            "XrmToolBox.AutoDeployer";
 
-        string IGitHubPlugin.UserName
-        {
-            get
-            {
-                return "Cinteros";
-            }
-        }
+        string IGitHubPlugin.UserName =>
+            "Innofactor";
 
         #endregion Public Properties
 
@@ -71,7 +61,7 @@
             ofdPlugin.Filter = "MS CRM Plugins|*.dll";
             ofdPlugin.FileOk += (s, a) =>
                 {
-                    var id = this.GetAssemblyId(ofdPlugin.FileName);
+                    var id = GetAssemblyId(ofdPlugin.FileName);
 
                     if (id.Equals(Guid.Empty))
                     {
@@ -80,28 +70,28 @@
                         return;
                     }
 
-                    this.PluginId = id;
+                    PluginId = id;
 
-                    this.lPlugin.Text = ofdPlugin.FileName;
+                    lPlugin.Text = ofdPlugin.FileName;
 
-                    this.Watcher = new FileSystemWatcher
+                    Watcher = new FileSystemWatcher
                     {
-                        Path = Path.GetDirectoryName(this.lPlugin.Text),
-                        Filter = Path.GetFileName(this.lPlugin.Text),
+                        Path = Path.GetDirectoryName(lPlugin.Text),
+                        Filter = Path.GetFileName(lPlugin.Text),
 
                         NotifyFilter = NotifyFilters.LastWrite,
                         EnableRaisingEvents = true
                     };
 
-                    this.Watcher.Changed -= Plugin_Changed;
-                    this.Watcher.Changed += Plugin_Changed;
+                    Watcher.Changed -= Plugin_Changed;
+                    Watcher.Changed += Plugin_Changed;
                 };
             ofdPlugin.ShowDialog();
         }
 
         private Guid GetAssemblyId(string fileName)
         {
-            var assembly = Assembly.Load(this.ReadFile(fileName));
+            var assembly = Assembly.Load(ReadFile(fileName));
 
             var chunks = assembly.FullName.Split(new string[] { ", ", "Version=", "Culture=", "PublicKeyToken=" }, StringSplitOptions.RemoveEmptyEntries);
 
@@ -111,16 +101,11 @@
             query.Criteria.AddCondition("culture", ConditionOperator.Equal, chunks[2]);
             query.Criteria.AddCondition("publickeytoken", ConditionOperator.Equal, chunks[3]);
 
-            var plugin = this.Service == null ? null : this.Service.RetrieveMultiple(query).Entities.FirstOrDefault();
+            var plugin = Service?.RetrieveMultiple(query).Entities.FirstOrDefault();
 
-            if (plugin != null)
-            {
-                return plugin.Id;
-            }
-            else
-            {
-                return Guid.Empty;
-            }
+            return (plugin != null)
+                ? plugin.Id
+                : Guid.Empty;
         }
 
         private void Plugin_Changed(object sender, FileSystemEventArgs e)
@@ -151,32 +136,32 @@
                 Thread.Sleep(500);
             }
 
-            this.Invoke(new Action(() =>
+            Invoke(new Action(() =>
                 {
                     try
                     {
-                        var lastWriteTime = File.GetLastWriteTime(this.lPlugin.Text);
+                        var lastWriteTime = File.GetLastWriteTime(lPlugin.Text);
                         if (lastWriteTime != LastRead)
                         {
-                            tbLog.Text += string.Format("{0}: Assembly '{1}' was changed.\r\n", DateTime.Now, Path.GetFileName(this.lPlugin.Text));
+                            tbLog.Text += string.Format("{0}: Assembly '{1}' was changed.\r\n", DateTime.Now, Path.GetFileName(lPlugin.Text));
 
                             var plugin = new Entity("pluginassembly")
                             {
-                                Id = this.PluginId
+                                Id = PluginId
                             };
 
-                            plugin["content"] = Convert.ToBase64String(this.ReadFile(this.lPlugin.Text));
+                            plugin["content"] = Convert.ToBase64String(ReadFile(lPlugin.Text));
 
-                            this.Service.Update(plugin);
+                            Service.Update(plugin);
 
-                            tbLog.Text += string.Format("{0}: Assembly '{1}' was updated on the server.\r\n", DateTime.Now, Path.GetFileName(this.lPlugin.Text));
+                            tbLog.Text += string.Format("{0}: Assembly '{1}' was updated on the server.\r\n", DateTime.Now, Path.GetFileName(lPlugin.Text));
 
                             LastRead = lastWriteTime;
                         }
                     }
                     catch (Exception ex)
                     {
-                        tbLog.Text += string.Format("{0}: Assembly '{1}' was not updated. The reason is exception raised: '{2}'.\r\n", DateTime.Now, Path.GetFileName(this.lPlugin.Text), ex.Message);
+                        tbLog.Text += string.Format("{0}: Assembly '{1}' was not updated. The reason is exception raised: '{2}'.\r\n", DateTime.Now, Path.GetFileName(lPlugin.Text), ex.Message);
                     }
                 }));
         }
@@ -195,12 +180,12 @@
         private void tsbClose_Click(object sender, EventArgs e)
         {
             // Preparing to dispose watcher
-            if (this.Watcher != null)
+            if (Watcher != null)
             {
-                this.Watcher.Changed -= this.Plugin_Changed;
+                Watcher.Changed -= Plugin_Changed;
             }
 
-            this.CloseTool();
+            CloseTool();
         }
 
         #endregion Private Methods
