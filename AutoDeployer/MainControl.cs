@@ -1,4 +1,4 @@
-﻿namespace Cinteros.Xrm.AutoDeployTool
+﻿namespace Innofactor.XTB.AutoDeployer
 {
     using System;
     using System.IO;

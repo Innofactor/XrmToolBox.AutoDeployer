@@ -1,8 +1,6 @@
-﻿namespace Cinteros.Xrm.Plugins.AutoDeployTool
+﻿namespace Innofactor.XTB.AutoDeployer
 {
     using System.ComponentModel.Composition;
-    using Cinteros.Xrm.AutoDeployTool;
-    using Common.Utils;
     using XrmToolBox.Extensibility;
     using XrmToolBox.Extensibility.Interfaces;
 
@@ -18,10 +16,8 @@
     {
         #region Public Methods
 
-        public override IXrmToolBoxPluginControl GetControl()
-        {
-            return new MainControl();
-        }
+        public override IXrmToolBoxPluginControl GetControl() => 
+            new MainControl();
 
         #endregion Public Methods
     }

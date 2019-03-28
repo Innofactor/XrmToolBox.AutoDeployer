@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyCompany("Innofactor AB")]
-[assembly: AssemblyCopyright("Copyright © Innofactor AB 2016")]
-[assembly: AssemblyTitle("Innofactor XrmToolBox Plugins")]
-[assembly: AssemblyDescription("Various plugins for XrmToolBox by Innofactor AB")]
+[assembly: AssemblyCopyright("Copyright © Innofactor AB 2019")]
+[assembly: AssemblyTitle("Innofactor XrmToolBox AutoDeployer")]
+[assembly: AssemblyDescription("AutoDeployer Tool by Innofactor AB")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyProduct("Cinteros.XrmToolBox.Plugins")]
+[assembly: AssemblyProduct("Innofactor.XrmToolBox.AutoDeployer")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.2016.2.26")]
-[assembly: AssemblyFileVersion("1.2016.2.26")]
+[assembly: AssemblyVersion("1.2019.3.26")]
+[assembly: AssemblyFileVersion("1.2019.3.26")]
