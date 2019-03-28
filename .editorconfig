@@ -1,0 +1,68 @@
+root = true
+
+# CSharp code style settings:
+[*.cs]
+csharp_add_imports_to_deepest_scope = true
+csharp_force_attribute_style = separate
+csharp_indent_switch_labels = true
+csharp_indent_type_constraints = true
+csharp_int_align_assignments = true:error
+csharp_int_align_fields = true:error
+csharp_int_align_properties = true:error
+csharp_int_align_variables = true:error
+csharp_keep_existing_attribute_arrangement = true
+csharp_keep_user_linebreaks = true
+csharp_preferred_modifier_order = public,protected,internal,private,new,abstract,virtual,override,sealed,static,readonly,extern,unsafe,volatile,async:error
+csharp_qualified_using_at_nested_scope = true
+csharp_space_after_cast = false
+csharp_space_before_trailing_comment = true
+csharp_stick_comment = false
+csharp_style_var_for_built_in_types = true
+csharp_style_var_when_type_is_apparent = true
+csharp_wrap_before_arrow_with_expressions = false
+csharp_wrap_parameters_style = chop_if_long
+dotnet_sort_system_directives_first = true
+
+# New lines
+csharp_new_line_before_open_brace = all
+csharp_new_line_before_else = true
+csharp_new_line_before_catch = true
+csharp_new_line_before_finally = true
+csharp_new_line_before_members_in_object_initializers = true
+csharp_new_line_before_members_in_anonymous_types = true
+csharp_new_line_between_query_expression_clauses = true
+
+# Placing
+csharp_place_accessor_attribute_on_same_line = false
+csharp_place_accessorholder_attribute_on_same_line = false
+csharp_place_constructor_initializer_on_same_line = false
+csharp_place_expr_accessor_on_single_line = false
+csharp_place_expr_method_on_single_line = false
+csharp_place_expr_property_on_single_line = false
+csharp_place_field_attribute_on_same_line = false
+csharp_place_method_attribute_on_same_line = false
+csharp_place_simple_blocks_on_single_line = false
+csharp_place_type_attribute_on_same_line = false
+csharp_place_type_constraints_on_same_line = false
+
+# Expressions
+csharp_style_expression_bodied_accessors = true
+csharp_style_expression_bodied_constructors = true
+csharp_style_expression_bodied_indexers = true
+csharp_style_expression_bodied_methods = true:suggestion
+csharp_style_expression_bodied_operators = true:suggestion
+csharp_style_expression_bodied_properties = true:suggestion
+
+# Avoid "this." and "Me." if not necessary
+dotnet_style_qualification_for_field = false:suggestion
+dotnet_style_qualification_for_property = false:suggestion
+dotnet_style_qualification_for_method = false:suggestion
+dotnet_style_qualification_for_event = false:suggestion
+
+# Comments
+xmldoc_indent_text = remove_indent
+xmldoc_linebreaks_inside_tags_for_elements_with_child_elements = true
+
+indent_size = 4
+max_line_length = 200
+use_spaces = true
