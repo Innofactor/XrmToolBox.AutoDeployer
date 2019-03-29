@@ -1,13 +1,11 @@
 ﻿namespace Innofactor.XTB.AutoDeployer
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
-    using System.Linq;
-    using System.Reflection;
-    using System.Threading;
+    using System.Threading.Tasks;
     using System.Windows.Forms;
     using Microsoft.Xrm.Sdk;
-    using Microsoft.Xrm.Sdk.Query;
     using XrmToolBox.Extensibility;
     using XrmToolBox.Extensibility.Interfaces;
 
@@ -34,7 +32,7 @@
 
         #region Internal Properties
 
-        internal DateTime LastRead
+        internal Dictionary<string, Resource> Information
         {
             get;
             private set;
@@ -46,7 +44,7 @@
             private set;
         }
 
-        internal FileSystemWatcher Watcher
+        internal List<FileSystemWatcher> Watchers
         {
             get;
             private set;
@@ -56,70 +54,20 @@
 
         #region Private Methods
 
-        private void bPlugin_Click(object sender, EventArgs e)
+        private static bool IsAvailable(string location)
         {
-            ofdPlugin.Filter = "MS CRM Plugins|*.dll";
-            ofdPlugin.FileOk += (s, a) =>
-                {
-                    var id = GetAssemblyId(ofdPlugin.FileName);
+            var counter = 0;
 
-                    if (id.Equals(Guid.Empty))
-                    {
-                        MessageBox.Show("Please select valid MS Dynamics CRM plugin", "Incorrect file", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-                        return;
-                    }
-
-                    PluginId = id;
-
-                    lPlugin.Text = ofdPlugin.FileName;
-
-                    Watcher = new FileSystemWatcher
-                    {
-                        Path = Path.GetDirectoryName(lPlugin.Text),
-                        Filter = Path.GetFileName(lPlugin.Text),
-
-                        NotifyFilter = NotifyFilters.LastWrite,
-                        EnableRaisingEvents = true
-                    };
-
-                    Watcher.Changed -= Plugin_Changed;
-                    Watcher.Changed += Plugin_Changed;
-                };
-            ofdPlugin.ShowDialog();
-        }
-
-        private Guid GetAssemblyId(string fileName)
-        {
-            var assembly = Assembly.Load(ReadFile(fileName));
-
-            var chunks = assembly.FullName.Split(new string[] { ", ", "Version=", "Culture=", "PublicKeyToken=" }, StringSplitOptions.RemoveEmptyEntries);
-
-            var query = new QueryExpression("pluginassembly");
-            query.Criteria.AddCondition("name", ConditionOperator.Equal, chunks[0]);
-            query.Criteria.AddCondition("version", ConditionOperator.Equal, chunks[1]);
-            query.Criteria.AddCondition("culture", ConditionOperator.Equal, chunks[2]);
-            query.Criteria.AddCondition("publickeytoken", ConditionOperator.Equal, chunks[3]);
-
-            var plugin = Service?.RetrieveMultiple(query).Entities.FirstOrDefault();
-
-            return (plugin != null)
-                ? plugin.Id
-                : Guid.Empty;
-        }
-
-        private void Plugin_Changed(object sender, FileSystemEventArgs e)
-        {
-            // Waiting for plugin become fully available for reading
-            while (true)
+            // One minute in total operation to process the file: 120 retries with half a second delay between
+            while (true && counter < 120)
             {
                 try
                 {
-                    using (var stream = File.Open(e.FullPath, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite))
+                    using (var stream = File.Open(location, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite))
                     {
                         if (stream != null)
                         {
-                            break;
+                            return true;
                         }
                     }
                 }
@@ -133,56 +81,117 @@
                 {
                 }
 
-                Thread.Sleep(500);
+                // Half a second delay before retry
+                Task.Delay(500).Wait();
+                counter++;
             }
 
-            Invoke(new Action(() =>
+            return false;
+        }
+
+        private void bFolder_Click(object sender, EventArgs e)
+        {
+            if (fbdFolder.ShowDialog() == DialogResult.OK)
+            {
+                ClearWatchers();
+                SetWatchers();
+            }
+        }
+
+        private void ClearWatchers()
+        {
+            if (Watchers != null)
+            {
+                foreach (var watcher in Watchers)
+                {
+                    watcher.Changed -= File_Changed;
+                }
+            }
+
+            Watchers = new List<FileSystemWatcher>();
+        }
+
+        private void File_Changed(object sender, FileSystemEventArgs e)
+        {
+            var location = e.FullPath;
+
+            if (!Information.ContainsKey(location))
+            {
+                Information.Add(location, new Resource(Service, location));
+            }
+
+            var file = Information[location];
+
+            if (file.Target.Id == Guid.Empty)
+            {
+                return;
+            }
+
+            if (IsAvailable(location))
+            {
+                Invoke(new Action(() =>
                 {
                     try
                     {
-                        var lastWriteTime = File.GetLastWriteTime(lPlugin.Text);
-                        if (lastWriteTime != LastRead)
+                        var lastWriteTime = File.GetLastWriteTime(location);
+                        if (lastWriteTime > file.LastWriteTime)
                         {
-                            tbLog.Text += string.Format("{0}: Assembly '{1}' was changed.\r\n", DateTime.Now, Path.GetFileName(lPlugin.Text));
+                            tbLog.Text += $"{DateTime.Now}: File '{Path.GetFileName(location)}' was changed.\r\n";
 
-                            var plugin = new Entity("pluginassembly")
+                            var resource = new Entity(file.Target.LogicalName, file.Target.Id);
+
+                            switch (file.Destination)
                             {
-                                Id = PluginId
-                            };
+                                case Destination.Backend:
+                                    resource["content"] = Convert.ToBase64String(Resource.GetContents(location));
+                                    break;
 
-                            plugin["content"] = Convert.ToBase64String(ReadFile(lPlugin.Text));
+                                case Destination.Frontend:
+                                    break;
+                            }
 
-                            Service.Update(plugin);
+                            Service.Update(resource);
 
-                            tbLog.Text += string.Format("{0}: Assembly '{1}' was updated on the server.\r\n", DateTime.Now, Path.GetFileName(lPlugin.Text));
+                            tbLog.Text += $"{DateTime.Now}: File '{Path.GetFileName(location)}' was updated on the server.\r\n";
 
-                            LastRead = lastWriteTime;
+                            Information[location].LastWriteTime = lastWriteTime;
                         }
                     }
                     catch (Exception ex)
                     {
-                        tbLog.Text += string.Format("{0}: Assembly '{1}' was not updated. The reason is exception raised: '{2}'.\r\n", DateTime.Now, Path.GetFileName(lPlugin.Text), ex.Message);
+                        tbLog.Text += $"{DateTime.Now}: File '{Path.GetFileName(location)}' was not updated. The reason is exception raised: '{ex.Message}'.\r\n";
                     }
                 }));
+            }
         }
 
-        private byte[] ReadFile(string fileName)
+        private void SetWatchers()
         {
-            byte[] buffer = null;
-            using (var fs = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+            foreach (var patten in new string[] { "*.dll", "*.js", "*.htm", "*.html", "*.css" })
             {
-                buffer = new byte[fs.Length];
-                fs.Read(buffer, 0, (int)fs.Length);
+                var watcher = new FileSystemWatcher
+                {
+                    Path = Path.GetDirectoryName(fbdFolder.SelectedPath),
+                    IncludeSubdirectories = true,
+                    Filter = patten,
+
+                    NotifyFilter = NotifyFilters.LastWrite,
+                    EnableRaisingEvents = true
+                };
+
+                watcher.Changed -= File_Changed;
+                watcher.Changed += File_Changed;
+
+                Watchers.Add(watcher);
             }
-            return buffer;
         }
 
         private void tsbClose_Click(object sender, EventArgs e)
         {
             // Preparing to dispose watcher
-            if (Watcher != null)
+            if (Watchers != null)
             {
-                Watcher.Changed -= Plugin_Changed;
+                ClearWatchers();
             }
 
             CloseTool();
