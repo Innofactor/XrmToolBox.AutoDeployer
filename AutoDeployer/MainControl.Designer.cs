@@ -36,8 +36,8 @@
             this.gbFolder = new System.Windows.Forms.GroupBox();
             this.lPlugin = new System.Windows.Forms.Label();
             this.tbLog = new System.Windows.Forms.TextBox();
-            this.ofdAssembly = new System.Windows.Forms.OpenFileDialog();
             this.fbdFolder = new System.Windows.Forms.FolderBrowserDialog();
+            this.lFolder = new System.Windows.Forms.Label();
             this.tsMenu.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.gbFolder.SuspendLayout();
@@ -93,6 +93,7 @@
             // gbFolder
             // 
             this.gbFolder.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.gbFolder.Controls.Add(this.lFolder);
             this.gbFolder.Controls.Add(this.lPlugin);
             this.gbFolder.Controls.Add(this.bFolder);
             this.gbFolder.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -121,9 +122,13 @@
             this.tbLog.Size = new System.Drawing.Size(594, 319);
             this.tbLog.TabIndex = 3;
             // 
-            // ofdAssembly
+            // lFolder
             // 
-            this.ofdAssembly.FileName = "openFileDialog1";
+            this.lFolder.AutoSize = true;
+            this.lFolder.Location = new System.Drawing.Point(94, 20);
+            this.lFolder.Name = "lFolder";
+            this.lFolder.Size = new System.Drawing.Size(0, 13);
+            this.lFolder.TabIndex = 3;
             // 
             // MainControl
             // 
@@ -151,10 +156,10 @@
         private System.Windows.Forms.Button bFolder;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.GroupBox gbFolder;
-        private System.Windows.Forms.OpenFileDialog ofdAssembly;
         private System.Windows.Forms.Label lPlugin;
         private System.Windows.Forms.TextBox tbLog;
         private System.Windows.Forms.ToolStripButton tsbClose;
         private System.Windows.Forms.FolderBrowserDialog fbdFolder;
+        private System.Windows.Forms.Label lFolder;
     }
 }

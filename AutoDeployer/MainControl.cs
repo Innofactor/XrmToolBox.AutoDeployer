@@ -3,9 +3,11 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Threading;
     using System.Threading.Tasks;
     using System.Windows.Forms;
     using Microsoft.Xrm.Sdk;
+    using Microsoft.Xrm.Sdk.Query;
     using XrmToolBox.Extensibility;
     using XrmToolBox.Extensibility.Interfaces;
 
@@ -36,19 +38,19 @@
         {
             get;
             private set;
-        }
+        } = new Dictionary<string, Resource>();
 
-        internal Guid PluginId
+        internal SemaphoreSlim Signal
         {
             get;
             private set;
-        }
+        } = new SemaphoreSlim(1, 1);
 
         internal List<FileSystemWatcher> Watchers
         {
             get;
             private set;
-        }
+        } = new List<FileSystemWatcher>();
 
         #endregion Internal Properties
 
@@ -94,7 +96,9 @@
             if (fbdFolder.ShowDialog() == DialogResult.OK)
             {
                 ClearWatchers();
-                SetWatchers();
+                SetWatchers(fbdFolder.SelectedPath);
+
+                lFolder.Text = $"Watching folder '{fbdFolder.SelectedPath}'...";
             }
         }
 
@@ -117,12 +121,12 @@
 
             if (!Information.ContainsKey(location))
             {
-                Information.Add(location, new Resource(Service, location));
+                Information.Add(location, new Resource(RetrieveMultiple, location));
             }
 
             var file = Information[location];
 
-            if (file.Target.Id == Guid.Empty)
+            if (file.Target == null)
             {
                 return;
             }
@@ -139,18 +143,9 @@
                             tbLog.Text += $"{DateTime.Now}: File '{Path.GetFileName(location)}' was changed.\r\n";
 
                             var resource = new Entity(file.Target.LogicalName, file.Target.Id);
+                            resource["content"] = Convert.ToBase64String(Resource.GetContents(location));
 
-                            switch (file.Destination)
-                            {
-                                case Destination.Backend:
-                                    resource["content"] = Convert.ToBase64String(Resource.GetContents(location));
-                                    break;
-
-                                case Destination.Frontend:
-                                    break;
-                            }
-
-                            Service.Update(resource);
+                            Update(resource);
 
                             tbLog.Text += $"{DateTime.Now}: File '{Path.GetFileName(location)}' was updated on the server.\r\n";
 
@@ -165,13 +160,43 @@
             }
         }
 
-        private void SetWatchers()
+        private void Update(Entity item)
         {
-            foreach (var patten in new string[] { "*.dll", "*.js", "*.htm", "*.html", "*.css" })
+            try
+            {
+                Signal.Wait();
+                Service?.Update(item);
+            }
+            finally
+            {
+                Signal.Release();
+            }
+        }
+
+        private IEnumerable<Entity> RetrieveMultiple(QueryExpression query)
+        {
+            try
+            {
+                Signal.Wait();
+                return Service?.RetrieveMultiple(query).Entities;
+            }
+            catch
+            {
+                return new List<Entity>();
+            }
+            finally
+            {
+                Signal.Release();
+            }
+        }
+
+        private void SetWatchers(string location)
+        {
+            foreach (var patten in new string[] { "*.dll", "*.js", "*.json", "*.htm", "*.html", "*.css", "*.jpg", "*.jpeg", "*.gif", "*.png" })
             {
                 var watcher = new FileSystemWatcher
                 {
-                    Path = Path.GetDirectoryName(fbdFolder.SelectedPath),
+                    Path = Path.GetDirectoryName(location),
                     IncludeSubdirectories = true,
                     Filter = patten,
 
