@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
-    <id>Xrm.Persistent.Collections</id>
+    <id>Innofactor.XTB.AutoDeployer</id>
     <version>1.0.0</version>
     <title>Xrm.Persistent.Collections</title>
-    <authors>Heath Hopkins, Alexey Shytikov, Niklas Malmqvist</authors>
+    <authors>Alexey Shytikov</authors>
     <owners>Innofactor AB</owners>
-    <projectUrl>https://github.com/Innofactor/Xrm.Persistent.Collections</projectUrl>
+    <projectUrl>https://github.com/Innofactor/XrmToolBox.AutoDeployer</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
     <description>Persistent (Akavache backed) collections for Microsoft Dynamics CRM</description>
