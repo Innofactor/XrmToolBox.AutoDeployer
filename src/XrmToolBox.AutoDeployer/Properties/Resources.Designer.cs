@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Innofactor.XTB.AutoDeployer.Properties {
+namespace XrmToolBox.AutoDeployer.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Innofactor.XTB.AutoDeployer.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Innofactor.XTB.AutoDeployer.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("XrmToolBox.AutoDeployer.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

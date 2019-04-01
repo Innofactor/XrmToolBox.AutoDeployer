@@ -1,4 +1,4 @@
-﻿namespace Innofactor.XTB.AutoDeployer
+﻿namespace XrmToolBox.AutoDeployer
 {
     internal enum Destination
     {

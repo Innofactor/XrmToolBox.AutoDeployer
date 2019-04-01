@@ -7,8 +7,8 @@
     <ProjectGuid>{3C865935-8376-4B29-BBF2-9EEEB08FA9EA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Innofactor.XTB.AutoDeployer</RootNamespace>
-    <AssemblyName>Innofactor.XTB.AutoDeployer</AssemblyName>
+    <RootNamespace>XrmToolBox.AutoDeployer</RootNamespace>
+    <AssemblyName>XrmToolBox.AutoDeployer</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

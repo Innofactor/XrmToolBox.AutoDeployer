@@ -1,4 +1,4 @@
-﻿namespace Innofactor.XTB.AutoDeployer
+﻿namespace XrmToolBox.AutoDeployer
 {
     using System.ComponentModel.Composition;
     using XrmToolBox.Extensibility;
