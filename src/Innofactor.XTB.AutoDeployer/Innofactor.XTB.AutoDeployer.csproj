@@ -80,6 +80,14 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Xml" />
+    <Reference Include="XrmToolBox.Extensibility, Version=1.2019.2.32, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\XrmToolBoxPackage.1.2019.2.30\lib\net462\XrmToolBox.Extensibility.dll</HintPath>
+    </Reference>
+    <Reference Include="XrmToolBox.PluginsStore, Version=1.2019.2.32, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\XrmToolBoxPackage.1.2019.2.30\lib\net462\XrmToolBox.PluginsStore.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants.cs" />
@@ -113,20 +121,6 @@
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\shytikov\XrmToolBox\XrmToolBox.Extensibility\XrmToolBox.Extensibility.csproj">
-      <Project>{df77aea3-43f7-403c-91af-3023a3bb06ec}</Project>
-      <Name>XrmToolBox.Extensibility</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\shytikov\XrmToolBox\XrmToolBox.PluginsStore\XrmToolBox.PluginsStore.csproj">
-      <Project>{ebcb3d22-03f2-40d2-b949-05cae575f2ea}</Project>
-      <Name>XrmToolBox.PluginsStore</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\shytikov\XrmToolBox\XrmToolBox\XrmToolBox.csproj">
-      <Project>{328d55be-8b9a-4087-a5c2-9fbaf623f54b}</Project>
-      <Name>XrmToolBox</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
