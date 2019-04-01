@@ -15,7 +15,7 @@ build:
   parallel: true
   verbosity: minimal
 after_build:
-- cmd: nuget pack src\Innofactor.XTB.AutoDeployer\Innofactor.XTB.AutoDeployer.csproj -Properties Configuration=Release;Platform=AnyCPU -Version %APPVEYOR_BUILD_VERSION%
+- cmd: nuget pack src\XrmToolBox.AutoDeployer\XrmToolBox.AutoDeployer.csproj -Properties Configuration=Release;Platform=AnyCPU -Version %APPVEYOR_BUILD_VERSION%
 artifacts:
 - path: '*.nupkg'
 deploy:
