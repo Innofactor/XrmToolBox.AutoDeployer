@@ -3,12 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2050
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3C24DC98-E02C-4450-89EB-239A0A304106}"
-	ProjectSection(SolutionItems) = preProject
-		Cinteros.XrmToolBox.Plugins.nuspec = Cinteros.XrmToolBox.Plugins.nuspec
-		Cinteros.XrmToolBox.Plugins.yml = Cinteros.XrmToolBox.Plugins.yml
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Innofactor.XTB.AutoDeployer", "src\Innofactor.XTB.AutoDeployer\Innofactor.XTB.AutoDeployer.csproj", "{3C865935-8376-4B29-BBF2-9EEEB08FA9EA}"
 EndProject
 Global
