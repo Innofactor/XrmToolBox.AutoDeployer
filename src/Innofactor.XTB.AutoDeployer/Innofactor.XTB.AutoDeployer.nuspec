@@ -9,7 +9,11 @@
     <projectUrl>https://github.com/Innofactor/XrmToolBox.AutoDeployer</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
-    <description>Persistent (Akavache backed) collections for Microsoft Dynamics CRM</description>
+    <description>Tool to automatically deploy assemblies and webresources to Microsoft Dynamics CRM</description>
     <copyright>Copyright © Innofactor AB 2019</copyright>
+    <tags>XrmToolBox Plugins Innofactor AutoDeployer</tags>
+    <dependencies>
+      <dependency id="XrmToolBox" version="1.2017.10.19" />
+    </dependencies>
   </metadata>
 </package>
