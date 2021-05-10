@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XrmToolBox.AutoDeployer", "src\XrmToolBox.AutoDeployer\XrmToolBox.AutoDeployer.csproj", "{3C865935-8376-4B29-BBF2-9EEEB08FA9EA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XrmToolBox.AutoDeployer", "XrmToolBox.AutoDeployer\XrmToolBox.AutoDeployer.csproj", "{3C865935-8376-4B29-BBF2-9EEEB08FA9EA}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "XrmToolBox.Helpers", "XrmToolBox.Helpers\XrmToolBox.Helpers.shproj", "{88280EA8-F014-41DE-9752-E1DDFFF053A9}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		XrmToolBox.Helpers\XrmToolBox.Helpers.projitems*{3c865935-8376-4b29-bbf2-9eeeb08fa9ea}*SharedItemsImports = 4
+		..\XrmToolBox.Helpers\XrmToolBox.Helpers.projitems*{3c865935-8376-4b29-bbf2-9eeeb08fa9ea}*SharedItemsImports = 4
 		XrmToolBox.Helpers\XrmToolBox.Helpers.projitems*{88280ea8-f014-41de-9752-e1ddfff053a9}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
