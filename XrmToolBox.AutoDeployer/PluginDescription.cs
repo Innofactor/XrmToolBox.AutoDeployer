@@ -6,7 +6,7 @@
 
     [Export(typeof(IXrmToolBoxPlugin)),
     ExportMetadata("Name", "Auto Deployer"),
-    ExportMetadata("Description", "Tool to automatically upload plugin assemblies and web resources if they are changed during build process"),
+    ExportMetadata("Description", "Tool to automatically upload plugin assemblies if they are changed during build process"),
     ExportMetadata("SmallImageBase64", Constants.B64_IMAGE_SMALL), // null for "no logo" image or base64 image content
     ExportMetadata("BigImageBase64", Constants.B64_IMAGE_LARGE), // null for "no logo" image or base64 image content
     ExportMetadata("BackgroundColor", "#ffffff"), // Use a HTML color name

@@ -13,7 +13,7 @@
     <description>
     Tool to automatically upload plugin assemblies and web resources if they are changed during build process
 	</description>
-    <summary>Tool to automatically upload plugin assemblies and web resources if they are changed during build process.</summary>
+    <summary>Tool to automatically upload plugin assemblies if they are changed during build process.</summary>
     <releaseNotes>
    
     </releaseNotes>
