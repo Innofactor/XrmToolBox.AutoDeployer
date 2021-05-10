@@ -1,0 +1,4 @@
+[submodule "XrmToolBox.Helpers"]
+	path = XrmToolBox.Helpers
+	url = https://github.com/Innofactor/XrmToolBox.Helpers.git
+	branch = master
