@@ -70,12 +70,12 @@ namespace XrmToolBox.AutoDeployer
             // linkLabelImran
             // 
             this.linkLabelImran.AutoSize = true;
-            this.linkLabelImran.Location = new System.Drawing.Point(96, 249);
+            this.linkLabelImran.Location = new System.Drawing.Point(81, 249);
             this.linkLabelImran.Name = "linkLabelImran";
-            this.linkLabelImran.Size = new System.Drawing.Size(72, 13);
+            this.linkLabelImran.Size = new System.Drawing.Size(90, 13);
             this.linkLabelImran.TabIndex = 54;
             this.linkLabelImran.TabStop = true;
-            this.linkLabelImran.Text = "@imranakram";
+            this.linkLabelImran.Text = "@imranakram365";
             this.linkLabelImran.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelImran_LinkClicked);
             // 
             // label3
@@ -131,10 +131,10 @@ namespace XrmToolBox.AutoDeployer
             this.lblDescription.Location = new System.Drawing.Point(173, 94);
             this.lblDescription.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblDescription.Name = "lblDescription";
-            this.lblDescription.Size = new System.Drawing.Size(375, 37);
+            this.lblDescription.Size = new System.Drawing.Size(413, 37);
             this.lblDescription.TabIndex = 48;
-            this.lblDescription.Text = "Tool to automatically upload plugin assemblies and web resources if they are chan" +
-    "ged during build process";
+            this.lblDescription.Text = "Tool to automatically upload plugin assemblies if they are changed during build p" +
+    "rocess";
             // 
             // lblHeading
             // 
@@ -204,7 +204,7 @@ namespace XrmToolBox.AutoDeployer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(574, 442);
+            this.ClientSize = new System.Drawing.Size(597, 442);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.linkLabelImran);
