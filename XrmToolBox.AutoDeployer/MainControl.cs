@@ -11,7 +11,7 @@
     using XrmToolBox.Extensibility;
     using XrmToolBox.Extensibility.Interfaces;
 
-    public partial class MainControl : PluginControlBase, IGitHubPlugin, IWorkerHost
+    public partial class MainControl : PluginControlBase, IGitHubPlugin, IWorkerHost, IAboutPlugin
     {
         #region Public Constructors
 
@@ -53,6 +53,24 @@
         } = new List<FileSystemWatcher>();
 
         #endregion Internal Properties
+
+        #region Public Methods
+
+        public void ShowAboutDialog()
+        {
+            try
+            {
+                var about = new About();
+                //StartPosition = FormStartPosition.CenterParent
+                about.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        #endregion Public Methods
 
         #region Private Methods
 
@@ -160,19 +178,6 @@
             }
         }
 
-        private void Update(Entity item)
-        {
-            try
-            {
-                Signal.Wait();
-                Service?.Update(item);
-            }
-            finally
-            {
-                Signal.Release();
-            }
-        }
-
         private IEnumerable<Entity> RetrieveMultiple(QueryExpression query)
         {
             try
@@ -220,6 +225,19 @@
             }
 
             CloseTool();
+        }
+
+        private void Update(Entity item)
+        {
+            try
+            {
+                Signal.Wait();
+                Service?.Update(item);
+            }
+            finally
+            {
+                Signal.Release();
+            }
         }
 
         #endregion Private Methods
