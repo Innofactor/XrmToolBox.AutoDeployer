@@ -58,12 +58,6 @@
             private set;
         }
 
-        internal Guid PluginId
-        {
-            get;
-            private set;
-        }
-
         internal FileSystemWatcher Watcher
         {
             get;
@@ -74,12 +68,12 @@
 
         #region Private Methods
 
-        private void bPlugin_Click(object sender, EventArgs e)
+        private void bAddPlugin_Click(object sender, EventArgs e)
         {
             ofdPlugin.Filter = "MS CRM Plugins|*.dll";
             ofdPlugin.FileOk += (s, a) =>
             {
-                var id = this.GetAssemblyId(ofdPlugin.FileName);
+                var id = GetAssemblyId(ofdPlugin.FileName);
 
                 if (id.Equals(Guid.Empty))
                 {
@@ -88,19 +82,27 @@
                     return;
                 }
 
-                this.PluginId = id;
+                listWatching.Items.Clear();
+                var plugin = new ListViewItem(new string[] {
+                    Path.GetFileName(ofdPlugin.FileName),
+                    Path.GetDirectoryName(ofdPlugin.FileName) ,
+                    DateTime.Now.ToString("HH:mm:ss"),
+                    string.Empty,
+                    "Watching",
+                    ofdPlugin.FileName,
+                    id.ToString()
+                });
+                listWatching.Items.Add(plugin);
 
-                this.lPlugin.Text = ofdPlugin.FileName;
+                Watcher = new FileSystemWatcher();
+                Watcher.Path = Path.GetDirectoryName(ofdPlugin.FileName);
+                Watcher.Filter = Path.GetFileName(ofdPlugin.FileName);
 
-                this.Watcher = new FileSystemWatcher();
-                this.Watcher.Path = Path.GetDirectoryName(this.lPlugin.Text);
-                this.Watcher.Filter = Path.GetFileName(this.lPlugin.Text);
+                Watcher.NotifyFilter = NotifyFilters.LastWrite;
+                Watcher.EnableRaisingEvents = true;
 
-                this.Watcher.NotifyFilter = NotifyFilters.LastWrite;
-                this.Watcher.EnableRaisingEvents = true;
-
-                this.Watcher.Changed -= Plugin_Changed;
-                this.Watcher.Changed += Plugin_Changed;
+                Watcher.Changed -= Plugin_Changed;
+                Watcher.Changed += Plugin_Changed;
             };
             ofdPlugin.ShowDialog();
         }
@@ -159,30 +161,30 @@
 
             this.Invoke(new Action(() =>
             {
-                try
+                if (listWatching.Items.Count > 0)
                 {
-                    var lastWriteTime = File.GetLastWriteTime(this.lPlugin.Text);
-                    if (lastWriteTime != LastRead)
+                    var file = e.FullPath;
+                    try
                     {
-                        tbLog.Text += string.Format("{0}: Assembly '{1}' was changed.\r\n", DateTime.Now, Path.GetFileName(this.lPlugin.Text));
-
-                        var plugin = new Entity("pluginassembly")
+                        var lastWriteTime = File.GetLastWriteTime(file);
+                        if (lastWriteTime != LastRead)
                         {
-                            Id = this.PluginId
-                        };
+                            listWatching.Items[0].SubItems[3].Text = DateTime.Now.ToString("HH:mm:ss.fff");
+                            listWatching.Items[0].SubItems[4].Text = "Updating...";
 
-                        plugin["content"] = Convert.ToBase64String(this.ReadFile(this.lPlugin.Text));
+                            var plugin = new Entity("pluginassembly", Guid.Parse(listWatching.Items[0].SubItems[6].Text));
+                            plugin["content"] = Convert.ToBase64String(this.ReadFile(file));
+                            Service.Update(plugin);
 
-                        this.Service.Update(plugin);
-
-                        tbLog.Text += string.Format("{0}: Assembly '{1}' was updated on the server.\r\n", DateTime.Now, Path.GetFileName(this.lPlugin.Text));
-
-                        LastRead = lastWriteTime;
+                            listWatching.Items[0].SubItems[3].Text = DateTime.Now.ToString("HH:mm:ss.fff");
+                            listWatching.Items[0].SubItems[4].Text = "Update ok";
+                            LastRead = lastWriteTime;
+                        }
                     }
-                }
-                catch (Exception ex)
-                {
-                    tbLog.Text += string.Format("{0}: Assembly '{1}' was not updated. The reason is exception raised: '{2}'.\r\n", DateTime.Now, Path.GetFileName(this.lPlugin.Text), ex.Message);
+                    catch (Exception ex)
+                    {
+                        listWatching.Items[0].SubItems[4].Text = $"Error: {ex.Message}";
+                    }
                 }
             }));
         }
