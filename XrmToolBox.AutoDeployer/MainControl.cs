@@ -68,6 +68,7 @@
                 {
                     listWatching.Items[0].Selected = true;
                 }
+                bDelPlugin.Enabled = true;
             }
         }
 
@@ -85,7 +86,7 @@
 
         #endregion Private Methods
 
-        private void toolStripButton1_Click(object sender, EventArgs e)
+        private void bDelPlugin_Click(object sender, EventArgs e)
         {
             foreach (ListViewItem item in listWatching.SelectedItems)
             {
@@ -100,6 +101,7 @@
         private void listWatching_SelectedIndexChanged(object sender, EventArgs e)
         {
             Plugin_Changed(sender, e);
+            bDelPlugin.Enabled = listWatching.SelectedItems.Count > 0;
         }
     }
 }
