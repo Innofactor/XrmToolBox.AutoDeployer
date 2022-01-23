@@ -30,43 +30,29 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainControl));
             this.tsMenu = new System.Windows.Forms.ToolStrip();
+            this.bAddPlugin = new System.Windows.Forms.ToolStripButton();
             this.ofdPlugin = new System.Windows.Forms.OpenFileDialog();
             this.listWatching = new System.Windows.Forms.ListView();
-            this.bAddPlugin = new System.Windows.Forms.ToolStripButton();
-            this.folder = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.file = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.addtime = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.updated = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.log = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.folder = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.fileupdated = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.pluginupdated = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.status = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.tsMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // tsMenu
             // 
+            this.tsMenu.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.tsMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.bAddPlugin});
+            this.bAddPlugin,
+            this.toolStripButton1});
             this.tsMenu.Location = new System.Drawing.Point(0, 0);
             this.tsMenu.Name = "tsMenu";
             this.tsMenu.Size = new System.Drawing.Size(1061, 25);
             this.tsMenu.TabIndex = 0;
             this.tsMenu.Text = "toolStrip1";
-            // 
-            // listWatching
-            // 
-            this.listWatching.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.file,
-            this.folder,
-            this.addtime,
-            this.updated,
-            this.log});
-            this.listWatching.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listWatching.HideSelection = false;
-            this.listWatching.Location = new System.Drawing.Point(0, 25);
-            this.listWatching.Name = "listWatching";
-            this.listWatching.Size = new System.Drawing.Size(1061, 331);
-            this.listWatching.TabIndex = 3;
-            this.listWatching.UseCompatibleStateImageBehavior = false;
-            this.listWatching.View = System.Windows.Forms.View.Details;
             // 
             // bAddPlugin
             // 
@@ -78,30 +64,62 @@
             this.bAddPlugin.Text = "Add Plugin to Watch";
             this.bAddPlugin.Click += new System.EventHandler(this.bAddPlugin_Click);
             // 
-            // folder
+            // ofdPlugin
             // 
-            this.folder.Text = "Folder";
-            this.folder.Width = 262;
+            this.ofdPlugin.Filter = "Dataverse Plugin file|*.dll";
+            this.ofdPlugin.Title = "Select Dataverse Plugin file";
+            // 
+            // listWatching
+            // 
+            this.listWatching.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.file,
+            this.folder,
+            this.fileupdated,
+            this.pluginupdated,
+            this.status});
+            this.listWatching.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listWatching.HideSelection = false;
+            this.listWatching.Location = new System.Drawing.Point(0, 25);
+            this.listWatching.Name = "listWatching";
+            this.listWatching.Size = new System.Drawing.Size(1061, 331);
+            this.listWatching.TabIndex = 3;
+            this.listWatching.UseCompatibleStateImageBehavior = false;
+            this.listWatching.View = System.Windows.Forms.View.Details;
             // 
             // file
             // 
             this.file.Text = "Plugin";
             this.file.Width = 141;
             // 
-            // addtime
+            // folder
             // 
-            this.addtime.Text = "Added";
-            this.addtime.Width = 124;
+            this.folder.Text = "Folder";
+            this.folder.Width = 262;
             // 
-            // updated
+            // fileupdated
             // 
-            this.updated.Text = "Updated";
-            this.updated.Width = 115;
+            this.fileupdated.Text = "File Updated";
+            this.fileupdated.Width = 124;
             // 
-            // log
+            // pluginupdated
             // 
-            this.log.Text = "Log";
-            this.log.Width = 341;
+            this.pluginupdated.Text = "Plugin Updated";
+            this.pluginupdated.Width = 115;
+            // 
+            // status
+            // 
+            this.status.Text = "Status";
+            this.status.Width = 341;
+            // 
+            // toolStripButton1
+            // 
+            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
+            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(113, 22);
+            this.toolStripButton1.Text = "Remove this Plugin";
+            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
             // MainControl
             // 
@@ -128,8 +146,9 @@
         private System.Windows.Forms.ToolStripButton bAddPlugin;
         private System.Windows.Forms.ColumnHeader file;
         private System.Windows.Forms.ColumnHeader folder;
-        private System.Windows.Forms.ColumnHeader addtime;
-        private System.Windows.Forms.ColumnHeader updated;
-        private System.Windows.Forms.ColumnHeader log;
+        private System.Windows.Forms.ColumnHeader fileupdated;
+        private System.Windows.Forms.ColumnHeader pluginupdated;
+        private System.Windows.Forms.ColumnHeader status;
+        private System.Windows.Forms.ToolStripButton toolStripButton1;
     }
 }
