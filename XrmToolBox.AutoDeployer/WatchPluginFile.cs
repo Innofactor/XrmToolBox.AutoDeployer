@@ -25,6 +25,10 @@ namespace XrmToolBox.AutoDeployer
         public string Log { get; set; }
         public FileSystemWatcher Watcher { get; }
 
+        public event EventHandler Changed;
+
+        protected virtual void OnChanged() { Changed?.Invoke(this, EventArgs.Empty); }
+
         public WatchPluginFile(string filename, IOrganizationService Service, Control Owner)
         {
             owner = Owner;
@@ -33,6 +37,7 @@ namespace XrmToolBox.AutoDeployer
             File = System.IO.Path.GetFileName(filename);
             Path = System.IO.Path.GetDirectoryName(filename);
             Status = "Watching";
+            Log = $"Started at {DateTime.Now}\r\n";
             PluginId = GetAssemblyId(Service);
             if (PluginId != Guid.Empty)
             {
@@ -44,13 +49,8 @@ namespace XrmToolBox.AutoDeployer
                 Watcher.Changed += Plugin_Changed;
             }
             ListItem = new ListViewItem();
-            ListItem.Text = File;
             ListItem.Tag = this;
-            ListItem.SubItems.Add(Path);
-            ListItem.SubItems.Add(string.Empty);
-            ListItem.SubItems.Add(string.Empty);
-            ListItem.SubItems.Add(string.Empty);
-            ListItem.SubItems.Add(string.Empty);
+            UpdateList();
         }
 
         private void Plugin_Changed(object sender, FileSystemEventArgs e)
@@ -89,6 +89,7 @@ namespace XrmToolBox.AutoDeployer
                 {
                     FileUpdated = lastWriteTime;
                     Status = "Updating...";
+                    Log += DateTime.Now.ToString("HH:mm:ss.fff") + $" File updated\r\n";
                     UpdateList();
 
                     var plugin = new Entity("pluginassembly", PluginId);
@@ -97,8 +98,8 @@ namespace XrmToolBox.AutoDeployer
 
                     PluginUpdated = DateTime.Now;
                     Status = "Update ok";
+                    Log += DateTime.Now.ToString("HH:mm:ss.fff") + $" Dataverse plugin updated\r\n";
                     UpdateList();
-                    Log += "Update plugin at " + DateTime.Now.ToString("HH:mm:ss.fff") + "\r\n";
                 }
             }
             catch (Exception ex)
@@ -112,11 +113,16 @@ namespace XrmToolBox.AutoDeployer
         {
             MethodInvoker mi = delegate
             {
+                while (ListItem.SubItems.Count < 5)
+                {
+                    ListItem.SubItems.Add(string.Empty);
+                }
                 ListItem.Text = File;
                 ListItem.SubItems[1].Text = Path;
-                ListItem.SubItems[2].Text = FileUpdated.ToString("HH.mm:ss.fff");
+                ListItem.SubItems[2].Text = FileUpdated.Ticks != 0 ? FileUpdated.ToString("HH.mm:ss.fff") : string.Empty;
                 ListItem.SubItems[3].Text = PluginUpdated.ToString("HH:mm:ss.fff");
                 ListItem.SubItems[4].Text = Status;
+                OnChanged();
             };
             if (owner.InvokeRequired)
             {
