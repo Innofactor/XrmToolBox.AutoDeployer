@@ -120,7 +120,7 @@ namespace XrmToolBox.AutoDeployer
                 ListItem.Text = File;
                 ListItem.SubItems[1].Text = Path;
                 ListItem.SubItems[2].Text = FileUpdated.Ticks != 0 ? FileUpdated.ToString("HH.mm:ss.fff") : string.Empty;
-                ListItem.SubItems[3].Text = PluginUpdated.ToString("HH:mm:ss.fff");
+                ListItem.SubItems[3].Text = PluginUpdated.Ticks != 0 ? PluginUpdated.ToString("HH:mm:ss.fff") : string.Empty;
                 ListItem.SubItems[4].Text = Status;
                 OnChanged();
             };
