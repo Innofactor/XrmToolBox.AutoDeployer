@@ -59,9 +59,27 @@
 
         private void bAddPlugin_Click(object sender, EventArgs e)
         {
-            if (ofdPlugin.ShowDialog()== DialogResult.OK)
+            if (ofdPlugin.ShowDialog() == DialogResult.OK)
             {
-                listWatching.Items.Add(new WatchPluginFile(ofdPlugin.FileName, Service, this).ListItem);
+                var plugin = new WatchPluginFile(ofdPlugin.FileName, Service, this);
+                plugin.Changed += Plugin_Changed;
+                listWatching.Items.Add(plugin.ListItem);
+                if (listWatching.SelectedItems.Count == 0)
+                {
+                    listWatching.Items[0].Selected = true;
+                }
+            }
+        }
+
+        private void Plugin_Changed(object sender, EventArgs e)
+        {
+            if (listWatching.SelectedItems.Count == 1 && listWatching.SelectedItems[0].Tag is WatchPluginFile plugin)
+            {
+                txtLog.Text = plugin.Log;
+            }
+            else
+            {
+                txtLog.Text = string.Empty;
             }
         }
 
@@ -77,6 +95,11 @@
                 }
                 listWatching.Items.Remove(item);
             }
+        }
+
+        private void listWatching_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Plugin_Changed(sender, e);
         }
     }
 }
