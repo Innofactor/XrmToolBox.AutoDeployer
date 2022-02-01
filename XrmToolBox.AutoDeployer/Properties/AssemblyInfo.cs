@@ -5,10 +5,10 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyCompany("Alexey Shytikov, Imran Akram and Innofactor AB")]
-[assembly: AssemblyCopyright("Copyright © Innofactor AB 2021")]
+[assembly: AssemblyCompany("Imran Akram, Jonas Rapp and Alexey Shytikov and Innofactor AB")]
+[assembly: AssemblyCopyright("Copyright © Innofactor AB 2022")]
 [assembly: AssemblyTitle("Innofactor XrmToolBox AutoDeployer")]
-[assembly: AssemblyDescription("Auto Deployer Tool by Innofactor AB")]
+[assembly: AssemblyDescription("Auto Deployer Tool for Plugins by Innofactor AB")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyProduct("Innofactor.XTB.AutoDeployer")]
 [assembly: AssemblyTrademark("")]
